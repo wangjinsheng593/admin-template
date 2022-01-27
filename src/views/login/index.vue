@@ -8,7 +8,7 @@
             <!-- 用户名 -->
             <el-form-item>
                 <span class="svg-container">
-                    <el-icon><avatar /></el-icon>
+                    <svg-icon icon="user"></svg-icon>
                 </span>
                 <el-input
                     placeholder="username"
@@ -20,13 +20,13 @@
             <!-- 密码 -->
             <el-form-item>
                 <span class="svg-container">
-                    <svg-icon
-                        icon="https://res.lgdsunday.club/user.svg"
-                    ></svg-icon>
+                    <svg-icon icon="password" ></svg-icon>
                 </span>
                 <el-input placeholder="password" name="password"></el-input>
                 <span class="show-pwd">
-                    <el-icon><avatar /></el-icon>
+                    <span class="svg-container">
+                        <svg-icon icon="eye" ></svg-icon>
+                    </span>
                 </span>
             </el-form-item>
             <el-button type="primary" style="width: 100%; margin-bottom: 30px"
@@ -37,9 +37,7 @@
 </template>
 
 <script setup>
-import SvgIcon from '../../components/SvgIcon/index.vue'
-// 导入组件可以直接使用
-import { Avatar } from '@element-plus/icons'
+
 import {} from 'vue'
 </script>
 
