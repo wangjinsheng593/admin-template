@@ -1,16 +1,17 @@
 <template>
     <div class="login-container">
-        <el-form class="login-form">
+        <el-form :model="loginForm" :rules="loginRules" class="login-form">
             <div class="title-container">
                 <h3 class="title">用户登录</h3>
             </div>
 
             <!-- 用户名 -->
-            <el-form-item>
+            <el-form-item prop="username">
                 <span class="svg-container">
                     <svg-icon icon="user"></svg-icon>
                 </span>
                 <el-input
+                    v-model="loginForm.username"
                     placeholder="username"
                     name="username"
                     type="text"
@@ -18,14 +19,19 @@
             </el-form-item>
 
             <!-- 密码 -->
-            <el-form-item>
+            <el-form-item prop="password">
                 <span class="svg-container">
-                    <svg-icon icon="password" ></svg-icon>
+                    <svg-icon icon="password"></svg-icon>
                 </span>
-                <el-input placeholder="password" name="password"></el-input>
+                <el-input
+                    v-model="loginForm.password"
+                    placeholder="password"
+                    name="password"
+                >
+                </el-input>
                 <span class="show-pwd">
                     <span class="svg-container">
-                        <svg-icon icon="eye" ></svg-icon>
+                        <svg-icon icon="eye"></svg-icon>
                     </span>
                 </span>
             </el-form-item>
@@ -37,8 +43,30 @@
 </template>
 
 <script setup>
-
-import {} from 'vue'
+import { validatePassword } from '../../utils/rules';
+import { ref } from 'vue';
+// 数据源
+const loginForm = ref({
+  username: 'admin',
+  password: '123456'
+});
+// 验证规则
+const loginRules = ref({
+  username: [
+    {
+      required: true,
+      trigger: 'blur',
+      message: '用户名为必填项'
+    }
+  ],
+  password: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator: validatePassword()
+    }
+  ]
+});
 </script>
 
 <style lang="scss" scoped>
