@@ -1,10 +1,13 @@
 <template>
     <div class="login-container">
-        <el-form :model="loginForm" :rules="loginRules" class="login-form">
+        <el-form
+            ref="loginFromRef"
+            :model="loginForm"
+            :rules="loginRules"
+            class="login-form">
             <div class="title-container">
                 <h3 class="title">用户登录</h3>
             </div>
-
             <!-- 用户名 -->
             <el-form-item prop="username">
                 <span class="svg-container">
@@ -17,7 +20,6 @@
                     type="text"
                 ></el-input>
             </el-form-item>
-
             <!-- 密码 -->
             <el-form-item prop="password">
                 <span class="svg-container">
@@ -32,13 +34,20 @@
                 </el-input>
                 <span class="show-pwd">
                     <span class="svg-container" @click="onChangePwsTy">
-                        <svg-icon :icon="passwordType==='password'?'eye':'eye-open'"></svg-icon>
+                        <svg-icon
+                            :icon="passwordType === 'password' ? 'eye' : 'eye-open'"
+                        ></svg-icon>
                     </span>
                 </span>
             </el-form-item>
-            <el-button type="primary" style="width: 100%; margin-bottom: 30px"
-                >登录</el-button
+            <el-button
+                @click="handlerLogin"
+                type="primary"
+                :loading='loading'
+                style="width: 100%; margin-bottom: 30px"
             >
+                登录
+            </el-button>
         </el-form>
     </div>
 </template>
@@ -46,11 +55,13 @@
 <script setup>
 import { validatePassword } from '../../utils/rules';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 // 数据源
 const loginForm = ref({
-  username: 'admin',
+  username: 'super-admin',
   password: '123456'
 });
+
 // 验证规则
 const loginRules = ref({
   username: [
@@ -78,6 +89,22 @@ const onChangePwsTy = () => {
   } else {
     passwordType.value = 'password';
   }
+};
+
+// 处理登录
+const loading = ref(false);
+const store = useStore();
+const loginFromRef = ref(null);
+const handlerLogin = () => {
+  loginFromRef.value.validate(valid => {
+    if (!valid) return;
+    loading.value = true;
+    store.dispatch('user/login', loginForm.value).then(res => {
+      loading.value = false;
+    }).catch(() => {
+      loading.value = false;
+    });
+  });
 };
 </script>
 
