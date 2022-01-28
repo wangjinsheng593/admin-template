@@ -1,8 +1,9 @@
-import { login } from '@/api/sys';
+import { login, getUserInfo } from '@/api/sys';
 import md5 from 'md5';
-import { setItem, getItem } from '@/utils/storage';
+import { setItem, getItem, removeAllItem } from '@/utils/storage';
 import { TOKEN } from '@/constant/index';
 import router from '@/router';
+import { setTimeStamp } from '@/utils/auth';
 
 /***
  *  this.commit('user/setToken', data.data.data.token);
@@ -15,10 +16,15 @@ import router from '@/router';
 export default {
   namespaced: true,
   state: () => ({
+    userInfo: {},
     token: getItem(TOKEN) || ''
+
   }),
 
   mutations: {
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
+    },
     setToken(state, token) {
       state.token = token;
       setItem(TOKEN, token);
@@ -26,9 +32,9 @@ export default {
   },
 
   actions: {
-    /***
-       * 登入请求动作
-       */
+    /**
+      * 登入请求动作
+     */
     login({ commit }, userInfo) {
       const { username, password } = userInfo;
       return new Promise((resolve, reject) => {
@@ -39,11 +45,32 @@ export default {
           commit('setToken', data.token);
           // 跳转
           router.push('/');
+          // 保存登录时间
+          setTimeStamp();
           resolve();
         }).catch((err) => {
           reject(err);
         });
       });
+    },
+
+    /**
+     * 获取用户信息
+     */
+    async getUserInfo({ commit }) {
+      const res = await getUserInfo();
+      commit('setUserInfo', res);
+      return res;
+    },
+
+    /**
+     * 退出登录
+     */
+    logout({ commit }) {
+      this.commit('user/setToken', '');
+      this.commit('user/setUserInfo', {});
+      removeAllItem();
+      router.push('/login');
     }
 
   }
