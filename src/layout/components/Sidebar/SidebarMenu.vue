@@ -2,6 +2,7 @@
   <!-- 一级 menu 菜单 -->
   <!-- uniqueOpened 表示只能开一个菜单 -->
   <el-menu
+    :collapse="!$store.getters.sidebarOpened"
     :background-color="$store.getters.cssVar.menuBg"
     :text-color="$store.getters.cssVar.menuText"
     :active-text-color="$store.getters.cssVar.menuActiveText"
