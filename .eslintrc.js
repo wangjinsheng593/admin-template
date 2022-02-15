@@ -26,7 +26,9 @@ module.exports = {
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'space-before-function-paren': 'off',
-
+        "quotes": "error", // 默认
+        "quotes": "warn", // 修改为警告
+        "quotes": "off", // 修改不校验
         // 检查分号
         'semi': ['error', 'always'],
         // 不检查分号
