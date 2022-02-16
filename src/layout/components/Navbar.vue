@@ -8,7 +8,6 @@
             <!-- 头像 -->
             <el-dropdown class="avatar-container" trigger="click">
                 <div class="avatar-wrapper">
-                    <!--  :src="$store.getters.userInfo.avatar" -->
                     <el-avatar shape="square" :size="40" :src="LogoSmall"></el-avatar>
                     <i class="el-icon-s-tools"></i>
                 </div>
