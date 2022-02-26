@@ -1,13 +1,10 @@
 <template>
-    <router-view />
+	<router-view />
 </template>
 
-<script>
-export default {
-  name: 'App',
-  components: {}
-};
+<script setup>
+import { getOriginalStyle } from './utils/theme';
+getOriginalStyle();
 </script>
 
-<style>
-</style>
+<style></style>
