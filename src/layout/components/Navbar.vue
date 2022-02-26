@@ -4,8 +4,9 @@
 		<hamburger class="hamburger-container"></hamburger>
 		<breadcrumb class="breadcrumb-container"></breadcrumb>
 		<div class="right-menu">
+			<screenfull class="right-menu-item hover-effect"></screenfull>
 			<theme-picker class="right-menu-item hover-effect"></theme-picker>
-			<lang-select class="right-menu-item hover-effect" />
+			<lang-select class="right-menu-item hover-effect"></lang-select>
 			<!-- 头像 -->
 			<el-dropdown class="avatar-container" trigger="click">
 				<div class="avatar-wrapper">
@@ -29,6 +30,7 @@
 </template>
 
 <script setup>
+import Screenfull from '@/components/Screenfull';
 import LangSelect from '@/components/LangSelect/index';
 import LogoSmall from '@/assets/logo-small.png';
 import {} from 'vue';
