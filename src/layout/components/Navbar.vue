@@ -4,6 +4,7 @@
 		<hamburger class="hamburger-container"></hamburger>
 		<breadcrumb class="breadcrumb-container"></breadcrumb>
 		<div class="right-menu">
+			<header-search class="right-menu-item hover-effect"></header-search>
 			<screenfull class="right-menu-item hover-effect"></screenfull>
 			<theme-picker class="right-menu-item hover-effect"></theme-picker>
 			<lang-select class="right-menu-item hover-effect"></lang-select>
@@ -38,6 +39,7 @@ import { useStore } from 'vuex';
 import Hamburger from '../../components/Hamburger/index.vue';
 import Breadcrumb from '../../components/Breadcrumb/index.vue';
 import ThemePicker from '@/components/ThemeSelect/index';
+import HeaderSearch from '@/components/HeaderSearch';
 
 const store = useStore();
 const logout = () => {
