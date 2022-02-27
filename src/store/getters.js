@@ -24,5 +24,6 @@ const getters = {
 	language: state => state.app.language,
 	// 换肤
 	mainColor: state => state.theme.mainColor,
+	tagsViewList: state => state.app.tagsViewList,
 };
 export default getters;
