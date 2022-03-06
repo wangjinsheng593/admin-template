@@ -1,6 +1,6 @@
 <template>
 	<div :class="{ show: isShow }" class="header-search">
-		<span @click.stop="onShowClick">
+		<span @click.stop="onShowClick" id="guide-search">
 			<svg-icon class-name="search-icon" icon="search"></svg-icon>
 		</span>
 

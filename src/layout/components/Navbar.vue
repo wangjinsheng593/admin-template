@@ -2,8 +2,10 @@
 	<div class="navbar">
 		<!-- 收缩按钮 -->
 		<hamburger class="hamburger-container"></hamburger>
-		<breadcrumb class="breadcrumb-container"></breadcrumb>
+		<breadcrumb id="guide-breadcrumb" class="breadcrumb-container"></breadcrumb>
+
 		<div class="right-menu">
+			<guide class="right-menu-item hover-effect" />
 			<header-search class="right-menu-item hover-effect"></header-search>
 			<screenfull class="right-menu-item hover-effect"></screenfull>
 			<theme-picker class="right-menu-item hover-effect"></theme-picker>
@@ -31,6 +33,7 @@
 </template>
 
 <script setup>
+import Guide from '@/components/Guide';
 import Screenfull from '@/components/Screenfull';
 import LangSelect from '@/components/LangSelect/index';
 import LogoSmall from '@/assets/logo-small.png';
