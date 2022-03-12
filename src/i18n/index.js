@@ -1,8 +1,7 @@
 import { createI18n } from 'vue-i18n';
-import store from '@/store';
-
 import mZhLocale from './lang/zh';
 import mEnLocale from './lang/en';
+import store from '@/store';
 
 const messages = {
 	en: {
@@ -16,13 +15,13 @@ const messages = {
 		},
 	},
 };
+
 /**
  * 返回当前 lang
  */
 function getLanguage() {
 	return store && store.getters && store.getters.language;
 }
-
 const i18n = createI18n({
 	// 使用 Composition API 模式，则需要将其设置为false
 	legacy: false,
@@ -31,4 +30,5 @@ const i18n = createI18n({
 	locale: getLanguage(),
 	messages,
 });
+
 export default i18n;

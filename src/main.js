@@ -16,8 +16,13 @@ import './permission';
 // i18n （PS：导入放到 APP.vue 导入之前，因为后面我们会在 app.vue 中使用国际化内容）
 import i18n from '@/i18n';
 
+// filter全局属性
+import installFilter from '@/filters';
+
 const app = createApp(App);
+installFilter(app);
 installElementPlus(app);
 installIcons(app);
+
 app.use(i18n);
 app.use(store).use(router).mount('#app');
