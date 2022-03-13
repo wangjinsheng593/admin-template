@@ -19,10 +19,14 @@ import i18n from '@/i18n';
 // filter全局属性
 import installFilter from '@/filters';
 
+// 指令
+import installDirective from './directives';
+
 const app = createApp(App);
 installFilter(app);
 installElementPlus(app);
 installIcons(app);
+installDirective(app);
 
 app.use(i18n);
 app.use(store).use(router).mount('#app');

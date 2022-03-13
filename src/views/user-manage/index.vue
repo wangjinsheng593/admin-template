@@ -3,7 +3,7 @@
 		<el-card class="header">
 			<div>
 				<el-button type="primary" @click="onImportExcelClick"> {{ $t('msg.excel.importExcel') }}</el-button>
-				<el-button type="success">
+				<el-button type="success" @click="onToExcelClick">
 					{{ $t('msg.excel.exportExcel') }}
 				</el-button>
 			</div>
@@ -36,7 +36,7 @@
 
 				<el-table-column :label="$t('msg.excel.action')" fixed="right" width="260">
 					<template #default="{ row }">
-						<el-button type="primary" size="mini">{{ $t('msg.excel.show') }}</el-button>
+						<el-button type="primary" size="mini" @click="onShowClick(row._id)">{{ $t('msg.excel.show') }}</el-button>
 						<el-button type="info" size="mini">{{ $t('msg.excel.showRole') }}</el-button>
 						<el-button type="danger" size="mini" @click="onRemoveClick(row)">{{ $t('msg.excel.remove') }}</el-button>
 					</template>
@@ -55,10 +55,12 @@
 			>
 			</el-pagination>
 		</el-card>
+		<export-to-excel v-model="exportToExcelVisible"></export-to-excel>
 	</div>
 </template>
 
 <script setup>
+import ExportToExcel from './components/Export2Excel.vue';
 import { deleteUser, getUserManageList } from '../../api/user-manage';
 import { useRouter } from 'vue-router';
 import { watchSwitchLang } from '@/utils/i18n';
@@ -71,6 +73,7 @@ const total = ref(0);
 const page = ref(1);
 const size = ref(2);
 const i18n = useI18n();
+const router = useRouter();
 // 获取数据方法
 const getListData = async () => {
 	const result = await getUserManageList({
@@ -84,6 +87,14 @@ getListData();
 watchSwitchLang(getListData);
 // 处理导入用户后数据不重新加载的问题---keepAlive重新被激活时，触发
 onActivated(getListData);
+
+/**
+ *
+ *用户详情
+ */
+const onShowClick = id => {
+	router.push(`/user/info/${id}`);
+};
 
 /**
  * 删除按钮点击事件
@@ -117,12 +128,19 @@ const handleCurrentChange = currentPage => {
 	getListData();
 };
 
-const router = useRouter();
 /**
  * excel 导入点击事件
  */
 const onImportExcelClick = () => {
 	router.push('/user/import');
+};
+
+/**
+ * excel 导出点击事件
+ */
+const exportToExcelVisible = ref(false);
+const onToExcelClick = () => {
+	exportToExcelVisible.value = true;
 };
 </script>
 
