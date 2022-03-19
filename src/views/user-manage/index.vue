@@ -37,7 +37,7 @@
 				<el-table-column :label="$t('msg.excel.action')" fixed="right" width="260">
 					<template #default="{ row }">
 						<el-button type="primary" size="mini" @click="onShowClick(row._id)">{{ $t('msg.excel.show') }}</el-button>
-						<el-button type="info" size="mini">{{ $t('msg.excel.showRole') }}</el-button>
+						<el-button type="info" size="mini" @click="onShowRoleClick(row)">{{ $t('msg.excel.showRole') }}</el-button>
 						<el-button type="danger" size="mini" @click="onRemoveClick(row)">{{ $t('msg.excel.remove') }}</el-button>
 					</template>
 				</el-table-column>
@@ -56,17 +56,19 @@
 			</el-pagination>
 		</el-card>
 		<export-to-excel v-model="exportToExcelVisible"></export-to-excel>
+		<roles-dialog v-model="roleDialogVisible" @updateRole="getListData" :userId="selectUserId"></roles-dialog>
 	</div>
 </template>
 
 <script setup>
+import RolesDialog from './components/roles';
 import ExportToExcel from './components/Export2Excel.vue';
 import { deleteUser, getUserManageList } from '../../api/user-manage';
 import { useRouter } from 'vue-router';
 import { watchSwitchLang } from '@/utils/i18n';
 import { useI18n } from 'vue-i18n';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { ref, onActivated } from 'vue';
+import { ref, onActivated, watch } from 'vue';
 // 数据相关
 const tableData = ref([]);
 const total = ref(0);
@@ -95,6 +97,20 @@ onActivated(getListData);
 const onShowClick = id => {
 	router.push(`/user/info/${id}`);
 };
+/**
+ * 查看角色的点击事件
+ */
+const roleDialogVisible = ref(false);
+const selectUserId = ref('');
+const onShowRoleClick = row => {
+	selectUserId.value = row._id;
+	roleDialogVisible.value = true;
+};
+
+// 保存每次打开dialog都可以重新获取数据`
+watch(roleDialogVisible, val => {
+	if (!val) selectUserId.value = '';
+});
 
 /**
  * 删除按钮点击事件

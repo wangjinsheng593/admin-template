@@ -11,12 +11,12 @@
 </template>
 
 <script setup>
-import { dateFormat } from '@/filters';
-import { getUserManageAllList } from '../../../api/user-manage';
-import { ref, defineProps, defineEmits } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { getUserManageAllList } from '@/api/user-manage';
+import { defineProps, defineEmits, ref } from 'vue';
 import { watchSwitchLang } from '@/utils/i18n';
+import { useI18n } from 'vue-i18n';
 import { USER_RELATIONS } from './Export2ExcelConstants';
+import { dateFormat } from '@/utils/date';
 
 defineProps({
 	modelValue: {
@@ -25,9 +25,11 @@ defineProps({
 	},
 });
 const emits = defineEmits(['update:modelValue']);
+
 const i18n = useI18n();
 let exportDefaultName = i18n.t('msg.excel.defaultName');
-const excelName = ref('员工信息列表');
+const excelName = ref('');
+excelName.value = exportDefaultName;
 watchSwitchLang(() => {
 	exportDefaultName = i18n.t('msg.excel.defaultName');
 	excelName.value = exportDefaultName;
@@ -39,7 +41,6 @@ watchSwitchLang(() => {
 const loading = ref(false);
 const onConfirm = async () => {
 	loading.value = true;
-	// 数据
 	const allUser = (await getUserManageAllList()).list;
 	// 导入工具包
 	const excel = await import('@/utils/Export2Excel');
@@ -56,23 +57,25 @@ const onConfirm = async () => {
 		// 文件类型
 		bookType: 'xlsx',
 	});
-
 	closed();
 };
-// 当我们使用export_json_to_excel的时候，我买快递的data数据，它必须是一个二维数组
+
+// 该方法负责将数组转化成二维数组
 const formatJson = (headers, rows) => {
+	// 首先遍历数组
+	// [{ username: '张三'},{},{}]  => [[’张三'],[],[]]
 	return rows.map(item => {
 		return Object.keys(headers).map(key => {
-			// 角色需要进行特殊处理
-			if (headers[key] === 'role') {
-				const roles = item[headers[key]];
-				return JSON.stringify(roles.map(role => role.title));
-			}
 			// 时间特殊处理
 			if (headers[key] === 'openTime') {
 				return dateFormat(item[headers[key]]);
 			}
+			// 角色特殊处理
+			if (headers[key] === 'role') {
+				const roles = item[headers[key]];
 
+				return JSON.stringify(roles.map(role => role.title));
+			}
 			return item[headers[key]];
 		});
 	});
@@ -82,6 +85,9 @@ const formatJson = (headers, rows) => {
  * 关闭
  */
 const closed = () => {
+	loading.value = false;
 	emits('update:modelValue', false);
 };
 </script>
+
+<style lang="scss" scoped></style>
