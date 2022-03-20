@@ -1,45 +1,51 @@
 <template>
 	<div class="login-container">
-		<el-form ref="loginFromRef" :model="loginForm" :rules="loginRules" class="login-form">
+		<el-form class="login-form" ref="loginFromRef" :model="loginForm" :rules="loginRules">
 			<div class="title-container">
 				<h3 class="title">{{ $t('msg.login.title') }}</h3>
+				<lang-select class="lang-select" effect="light"></lang-select>
 			</div>
-			<!-- 用户名 -->
+
 			<el-form-item prop="username">
 				<span class="svg-container">
-					<svg-icon icon="user"></svg-icon>
+					<svg-icon icon="user" />
 				</span>
-				<el-input v-model="loginForm.username" placeholder="username" name="username" type="text"></el-input>
+				<el-input placeholder="username" name="username" type="text" v-model="loginForm.username" />
 			</el-form-item>
-			<!-- 密码 -->
+
 			<el-form-item prop="password">
 				<span class="svg-container">
-					<svg-icon icon="password"></svg-icon>
+					<svg-icon icon="password" />
 				</span>
-				<el-input v-model="loginForm.password" placeholder="password" :type="passwordType" name="password"></el-input>
+				<el-input placeholder="password" name="password" :type="passwordType" v-model="loginForm.password" />
 				<span class="show-pwd">
-					<span class="svg-container" @click="onChangePwsTy">
-						<svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"></svg-icon>
-					</span>
+					<svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'" @click="onChangePwdType" />
 				</span>
 			</el-form-item>
-			<el-button @click="handlerLogin" type="primary" :loading="loading" style="width: 100%; margin-bottom: 30px">{{ $t('msg.login.loginBtn') }}</el-button>
+
+			<el-button type="primary" style="width: 100%; margin-bottom: 30px" :loading="loading" @click="handleLogin">{{
+				$t('msg.login.loginBtn')
+			}}</el-button>
+
 			<div class="tips" v-html="$t('msg.login.desc')"></div>
 		</el-form>
 	</div>
 </template>
 
 <script setup>
-import { validatePassword } from '../../utils/rules';
-import { ref } from 'vue';
+import LangSelect from '@/components/LangSelect/index.vue';
+import { ref, computed } from 'vue';
+import { validatePassword } from './rules';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { watchSwitchLang } from '@/utils/i18n';
+
 // 数据源
 const loginForm = ref({
 	username: 'super-admin',
 	password: '123456',
 });
-
 // 验证规则
 const i18n = useI18n();
 const loginRules = ref({
@@ -47,7 +53,9 @@ const loginRules = ref({
 		{
 			required: true,
 			trigger: 'blur',
-			message: i18n.t('msg.login.usernameRule'),
+			message: computed(() => {
+				return i18n.t('msg.login.usernameRule');
+			}),
 		},
 	],
 	password: [
@@ -58,11 +66,14 @@ const loginRules = ref({
 		},
 	],
 });
+// 监听语言变化，重新进行表单校验。issue: https://coding.imooc.com/learn/questiondetail/254087.html
+watchSwitchLang(() => {
+	loginFromRef.value.validate();
+});
 
-// 处理密码框文本显示
+// 处理密码框文本显示状态
 const passwordType = ref('password');
-
-const onChangePwsTy = () => {
+const onChangePwdType = () => {
 	if (passwordType.value === 'password') {
 		passwordType.value = 'text';
 	} else {
@@ -70,20 +81,25 @@ const onChangePwsTy = () => {
 	}
 };
 
-// 处理登录
+// 登录动作处理
 const loading = ref(false);
-const store = useStore();
 const loginFromRef = ref(null);
-const handlerLogin = () => {
+const store = useStore();
+const router = useRouter();
+const handleLogin = () => {
 	loginFromRef.value.validate(valid => {
 		if (!valid) return;
+
 		loading.value = true;
 		store
 			.dispatch('user/login', loginForm.value)
-			.then(res => {
+			.then(() => {
 				loading.value = false;
+				// 登录后操作
+				router.push('/');
 			})
-			.catch(() => {
+			.catch(err => {
+				console.log(err);
 				loading.value = false;
 			});
 	});
@@ -110,7 +126,7 @@ $cursor: #fff;
 		margin: 0 auto;
 		overflow: hidden;
 
-		::v-deep .el-form-item {
+		.el-form-item {
 			border: 1px solid rgba(255, 255, 255, 0.1);
 			background: rgba(0, 0, 0, 0.1);
 			border-radius: 5px;

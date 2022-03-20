@@ -1,6 +1,5 @@
 <template>
 	<div class="app-main">
-		<!-- 带有切换动画，并且具备组件缓存的 -->
 		<router-view v-slot="{ Component, route }">
 			<transition name="fade-transform" mode="out-in">
 				<keep-alive>
@@ -10,15 +9,16 @@
 		</router-view>
 	</div>
 </template>
+
 <script setup>
 import { watch } from 'vue';
-import { useRoute } from 'vue-router';
 import { isTags } from '@/utils/tags';
-import { useStore } from 'vuex';
 import { generateTitle, watchSwitchLang } from '@/utils/i18n';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
 const route = useRoute();
-const store = useStore();
+
 /**
  * 生成 title
  */
@@ -27,7 +27,6 @@ const getTitle = route => {
 	if (!route.meta) {
 		// 处理无 meta 的路由
 		const pathArr = route.path.split('/');
-		// 当前路劲的最后一个作为标题
 		title = pathArr[pathArr.length - 1];
 	} else {
 		title = generateTitle(route.meta.title);
@@ -38,11 +37,11 @@ const getTitle = route => {
 /**
  * 监听路由变化
  */
+const store = useStore();
 watch(
 	route,
-	(to, form) => {
-		// 并不是所有的路由都需要保存--比如白名单的路由并不需要保存
-		if (!isTags(to.path)) return '';
+	(to, from) => {
+		if (!isTags(to.path)) return;
 		const { fullPath, meta, name, params, path, query } = to;
 		store.commit('app/addTagsViewList', {
 			fullPath,
@@ -55,7 +54,6 @@ watch(
 		});
 	},
 	{
-		// 当刚刚进入到页面的时候就需要触发
 		immediate: true,
 	}
 );
@@ -75,7 +73,8 @@ watchSwitchLang(() => {
 	});
 });
 </script>
-<style lang="scss" scope>
+
+<style lang="scss" scoped>
 .app-main {
 	min-height: calc(100vh - 50px - 43px);
 	width: 100%;

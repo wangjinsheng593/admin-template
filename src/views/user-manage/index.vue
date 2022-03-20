@@ -2,7 +2,9 @@
 	<div class="user-manage-container">
 		<el-card class="header">
 			<div>
-				<el-button type="primary" @click="onImportExcelClick"> {{ $t('msg.excel.importExcel') }}</el-button>
+				<el-button type="primary" @click="onImportExcelClick" v-permission="['importUser']">
+					{{ $t('msg.excel.importExcel') }}</el-button
+				>
 				<el-button type="success" @click="onToExcelClick">
 					{{ $t('msg.excel.exportExcel') }}
 				</el-button>
@@ -37,8 +39,12 @@
 				<el-table-column :label="$t('msg.excel.action')" fixed="right" width="260">
 					<template #default="{ row }">
 						<el-button type="primary" size="mini" @click="onShowClick(row._id)">{{ $t('msg.excel.show') }}</el-button>
-						<el-button type="info" size="mini" @click="onShowRoleClick(row)">{{ $t('msg.excel.showRole') }}</el-button>
-						<el-button type="danger" size="mini" @click="onRemoveClick(row)">{{ $t('msg.excel.remove') }}</el-button>
+						<el-button type="info" size="mini" @click="onShowRoleClick(row)" v-permission="['distributeRole']">{{
+							$t('msg.excel.showRole')
+						}}</el-button>
+						<el-button type="danger" size="mini" @click="onRemoveClick(row)" v-permission="['removeUser']">{{
+							$t('msg.excel.remove')
+						}}</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
