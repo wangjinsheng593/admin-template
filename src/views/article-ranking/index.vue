@@ -26,10 +26,10 @@
 						{{ $filters.relativeTime(row.publicDate) }}
 					</template>
 					<template #default="{ row }" v-else-if="item.prop === 'action'">
-						<el-button type="primary" size="mini" @click="onShowClick(row)">{{
+						<el-button type="primary" size="small" @click="onShowClick(row)">{{
 							$t('msg.article.show')
 						}}</el-button>
-						<el-button type="danger" size="mini" @click="onRemoveClick(row)">{{
+						<el-button type="danger" size="small" @click="onRemoveClick(row)">{{
 							$t('msg.article.remove')
 						}}</el-button>
 					</template>
@@ -51,8 +51,10 @@
 </template>
 
 <script setup>
+// tableRef必须要导入，tableRef在sortable文件中才能获取得到Dom
+import { tableRef, initSortable } from './sortable'
 import { dynamicData, selectDynamicLabel, tableColumns } from './dynamic'
-import { ref, onActivated } from 'vue';
+import { ref, onActivated, onMounted } from 'vue';
 import { getArticleList } from '../../api/article';
 import { watchSwitchLang } from '../../utils/i18n';
 
@@ -74,6 +76,10 @@ getListData();
 watchSwitchLang(getListData);
 onActivated(getListData);
 
+// 表格拖拽相关
+onMounted(() => {
+  initSortable(tableData, getListData)
+})
 /**
  * 点击查看
  */
@@ -124,4 +130,10 @@ const handleCurrentChange = currentPage => {
 		text-align: center;
 	}
 }
+::v-deep .sortable-ghost {
+  opacity: 0.6;
+  color: #fff !important;
+  background: #304156 !important;
+}
+
 </style>

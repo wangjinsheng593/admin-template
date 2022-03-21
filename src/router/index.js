@@ -17,7 +17,7 @@ export const privateRoutes = [
 	ArticleRouter,
 	ArticleCreaterRouter,
 ];
-console.log('私有路由表:', privateRoutes);
+
 /**
  * 公开路由表
  */

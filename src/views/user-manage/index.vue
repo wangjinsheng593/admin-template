@@ -38,11 +38,11 @@
 
 				<el-table-column :label="$t('msg.excel.action')" fixed="right" width="260">
 					<template #default="{ row }">
-						<el-button type="primary" size="mini" @click="onShowClick(row._id)">{{ $t('msg.excel.show') }}</el-button>
-						<el-button type="info" size="mini" @click="onShowRoleClick(row)" v-permission="['distributeRole']">{{
+						<el-button type="primary" size="small" @click="onShowClick(row._id)">{{ $t('msg.excel.show') }}</el-button>
+						<el-button type="info" size="small" @click="onShowRoleClick(row)" v-permission="['distributeRole']">{{
 							$t('msg.excel.showRole')
 						}}</el-button>
-						<el-button type="danger" size="mini" @click="onRemoveClick(row)" v-permission="['removeUser']">{{
+						<el-button type="danger" size="small" @click="onRemoveClick(row)" v-permission="['removeUser']">{{
 							$t('msg.excel.remove')
 						}}</el-button>
 					</template>
