@@ -4,11 +4,8 @@
 			<div class="dynamic-box">
 				<span class="title">{{ $t('msg.article.dynamicTitle') }}</span>
 				<el-checkbox-group v-model="selectDynamicLabel">
-					<el-checkbox
-						v-for="(item, index) in dynamicData"
-						:label="item.label"
-						:key="index"
-					>{{ item.label }}
+					<el-checkbox v-for="(item, index) in dynamicData" :label="item.label" :key="index">
+						{{ item.label }}
 					</el-checkbox>
 				</el-checkbox-group>
 			</div>
@@ -16,22 +13,13 @@
 
 		<el-card>
 			<el-table ref="tableRef" :data="tableData" border>
-				<el-table-column
-					v-for="(item, index) in tableColumns"
-					:key="index"
-					:prop="item.prop"
-					:label="item.label"
-				>
+				<el-table-column v-for="(item, index) in tableColumns" :key="index" :prop="item.prop" :label="item.label">
 					<template #default="{ row }" v-if="item.prop === 'publicDate'">
 						{{ $filters.relativeTime(row.publicDate) }}
 					</template>
 					<template #default="{ row }" v-else-if="item.prop === 'action'">
-						<el-button type="primary" size="small" @click="onShowClick(row)">{{
-							$t('msg.article.show')
-						}}</el-button>
-						<el-button type="danger" size="small" @click="onRemoveClick(row)">{{
-							$t('msg.article.remove')
-						}}</el-button>
+						<el-button type="primary" size="small" @click="onShowClick(row)">{{ $t('msg.article.show') }}</el-button>
+						<el-button type="danger" size="small" @click="onRemoveClick(row)">{{ $t('msg.article.remove') }}</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -52,12 +40,14 @@
 
 <script setup>
 // tableRef必须要导入，tableRef在sortable文件中才能获取得到Dom
-import { tableRef, initSortable } from './sortable'
-import { dynamicData, selectDynamicLabel, tableColumns } from './dynamic'
+import { tableRef, initSortable } from './sortable';
+import { dynamicData, selectDynamicLabel, tableColumns } from './dynamic';
 import { ref, onActivated, onMounted } from 'vue';
-import { getArticleList } from '../../api/article';
+import { getArticleList, deleteArticle } from '../../api/article';
 import { watchSwitchLang } from '../../utils/i18n';
-
+import { ElMessageBox, ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 // 数据相关
 const tableData = ref([]);
 const total = ref(0);
@@ -78,17 +68,34 @@ onActivated(getListData);
 
 // 表格拖拽相关
 onMounted(() => {
-  initSortable(tableData, getListData)
-})
+	initSortable(tableData, getListData);
+});
+
 /**
- * 点击查看
+ * 查看按钮点击事件
  */
-const onShowClick = row => {};
+const router = useRouter();
+const onShowClick = row => {
+	router.push(`/article/${row._id}`);
+};
 
 /**
  *点击删除
  */
-const onRemoveClick = row => {};
+
+// 删除用户
+const i18n = useI18n();
+const onRemoveClick = row => {
+	ElMessageBox.confirm(i18n.t('msg.article.dialogTitle1') + row.title + i18n.t('msg.article.dialogTitle2'), {
+		type: 'warning',
+	}).then(async () => {
+		await deleteArticle(row._id);
+		ElMessage.success(i18n.t('msg.article.removeSuccess'));
+		// 重新渲染数据
+		getListData();
+	});
+};
+
 /**
  * size 改变触发
  */
@@ -131,9 +138,8 @@ const handleCurrentChange = currentPage => {
 	}
 }
 ::v-deep .sortable-ghost {
-  opacity: 0.6;
-  color: #fff !important;
-  background: #304156 !important;
+	opacity: 0.6;
+	color: #fff !important;
+	background: #304156 !important;
 }
-
 </style>
