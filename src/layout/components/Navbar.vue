@@ -12,7 +12,7 @@
 			<!-- 头像 -->
 			<el-dropdown class="avatar-container" trigger="click">
 				<div class="avatar-wrapper">
-					<el-avatar shape="square" :size="40" :src="$store.getters.userInfo.avatar"></el-avatar>
+					<el-avatar shape="square" :size="40" :src="LogoSmall"></el-avatar>
 					<i class="el-icon-s-tools"></i>
 				</div>
 				<template #dropdown>
@@ -34,6 +34,7 @@
 </template>
 
 <script setup>
+import LogoSmall from '@/assets/logo-small.png';
 import Hamburger from '@/components/Hamburger';
 import Breadcrumb from '@/components/Breadcrumb';
 import LangSelect from '@/components/LangSelect';
