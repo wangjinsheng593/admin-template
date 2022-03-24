@@ -18,6 +18,7 @@ export default {
 		setLanguage(state, lang) {
 			setItem(LANG, lang);
 			state.language = lang;
+			console.log("设置国际化:", state.language);
 		},
 		/**
 		 * 添加 tags

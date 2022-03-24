@@ -58,6 +58,14 @@
         margin-right: 16px;
       }
 
+      // menu 收起时
+      .el-menu--collapse{
+        .svg-icon {
+          margin-right: 0;
+        }
+
+      }
+
       .sub-el-icon {
         margin-right: 12px;
         margin-left: -2px;
