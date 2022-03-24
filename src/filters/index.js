@@ -1,36 +1,31 @@
-import dayjs from 'dayjs';
-import rt from 'dayjs/plugin/relativeTime';
+import dayjs from 'dayjs'
+import rt from 'dayjs/plugin/relativeTime'
 // 语言包
-import 'dayjs/locale/zh-cn';
-import store from '@/store';
-/**
- * 时间戳格式化
- * @param {*} val
- * @param {*} format
- * @returns
- */
-const dateFilter = (val, format = 'YYYY-MM-DD') => {
-	if (!isNaN(val)) {
-		val = parseInt(val);
-	}
+import 'dayjs/locale/zh-cn'
+import store from '@/store'
 
-	return dayjs(val).format(format);
-};
+const dateFilter = (val, format = 'YYYY-MM-DD') => {
+  if (!isNaN(val)) {
+    val = parseInt(val)
+  }
+
+  return dayjs(val).format(format)
+}
 
 // 加载相对时间插件
-dayjs.extend(rt);
+dayjs.extend(rt)
 function relativeTime(val) {
-	if (!isNaN(val)) {
-		val = parseInt(val);
-	}
-	return dayjs()
-		.locale(store.getters.language === 'zh' ? 'zh-cn' : 'en')
-		.to(dayjs(val));
+  if (!isNaN(val)) {
+    val = parseInt(val)
+  }
+  return dayjs()
+    .locale(store.getters.language === 'zh' ? 'zh-cn' : 'en')
+    .to(dayjs(val))
 }
 
 export default app => {
-	app.config.globalProperties.$filters = {
-		dateFilter,
-		relativeTime,
-	};
-};
+  app.config.globalProperties.$filters = {
+    dateFilter,
+    relativeTime
+  }
+}

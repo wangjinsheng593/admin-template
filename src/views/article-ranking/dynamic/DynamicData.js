@@ -2,7 +2,6 @@ import i18n from '@/i18n'
 
 const t = i18n.global.t
 
-// 指定初始列数据
 export default () => [
   {
     label: t('msg.article.ranking'),
