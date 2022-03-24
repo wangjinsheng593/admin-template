@@ -4,10 +4,10 @@
       <el-avatar
         :size="logoHeight"
         shape="square"
-        src="https://m.imooc.com/static/wap/static/common/img/logo-small@2x.png"
+        src="https://www.wutong31.shop/old/static/img/wutong_img.ae797ac8.png"
       />
       <h1 class="logo-title" v-if="$store.getters.sidebarOpened">
-        imooc-admin
+        admin
       </h1>
     </div>
     <el-scrollbar>

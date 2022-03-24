@@ -12,10 +12,11 @@
       <!-- 头像 -->
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
+          <!--   :src="$store.getters.userInfo.avatar" -->
           <el-avatar
             shape="square"
             :size="40"
-            :src="$store.getters.userInfo.avatar"
+            src='https://www.wutong31.shop/old/static/img/wutong_img.ae797ac8.png'
           ></el-avatar>
           <i class="el-icon-s-tools"></i>
         </div>
