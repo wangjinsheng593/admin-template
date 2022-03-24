@@ -7,10 +7,10 @@
     </template>
 
     <div class="user-profile">
-      <!-- 头像 -->
+      <!-- 头像  $store.getters.userInfo.avatar -->
       <div class="box-center">
         <pan-thumb
-          :image="$store.getters.userInfo.avatar"
+          image="https://res.lgdsunday.club/default-avatar.jpeg"
           :height="'100px'"
           :width="'100px'"
           :hoverable="false"

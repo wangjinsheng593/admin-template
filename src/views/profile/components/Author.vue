@@ -1,6 +1,7 @@
 <template>
   <div class="author-container">
     <div class="header">
+
       <pan-thumb
         image="https://img4.sycdn.imooc.com/61110c2b0001152907400741-140-140.jpg"
         height="60px"
